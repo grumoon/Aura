@@ -18,10 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(IBAction)btnGetPasteboardInfoClick:(UIButton *)button;
 
--(IBAction)btnAddValue1Click:(UIButton *)button;
-
--(IBAction)btnAddValue2Click:(UIButton *)button;
-
 @end
 
 NS_ASSUME_NONNULL_END

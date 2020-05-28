@@ -23,44 +23,26 @@
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OeU-6l-QYu">
-                            <rect key="frame" x="20" y="120" width="169" height="30"/>
+                            <rect key="frame" x="20" y="20" width="169" height="30"/>
                             <state key="normal" title="点击获取当前剪贴板数据"/>
                             <connections>
                                 <action selector="btnGetPasteboardInfoClick:" destination="-2" eventType="touchUpInside" id="vER-J5-KNO"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xoN-U7-DCA">
-                            <rect key="frame" x="20" y="20" width="68" height="30"/>
-                            <state key="normal" title="添加数据1"/>
-                            <connections>
-                                <action selector="btnAddValue1Click:" destination="-2" eventType="touchUpInside" id="qLt-dz-Z7z"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i9m-zk-s78">
-                            <rect key="frame" x="20" y="70" width="71" height="30"/>
-                            <state key="normal" title="添加数据2"/>
-                            <connections>
-                                <action selector="btnAddValue2Click:" destination="-2" eventType="touchUpInside" id="2EW-PF-osr"/>
-                            </connections>
-                        </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YEi-Hk-JaD">
-                            <rect key="frame" x="20" y="170" width="374" height="0.0"/>
+                            <rect key="frame" x="20" y="70" width="374" height="0.0"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="i9m-zk-s78" firstAttribute="leading" secondItem="qtZ-Qh-uad" secondAttribute="leading" constant="20" id="98A-Sd-bYk"/>
                         <constraint firstItem="OeU-6l-QYu" firstAttribute="leading" secondItem="qtZ-Qh-uad" secondAttribute="leading" constant="20" id="NHq-Jy-Z4e"/>
                         <constraint firstItem="YEi-Hk-JaD" firstAttribute="leading" secondItem="qtZ-Qh-uad" secondAttribute="leading" constant="20" id="PWV-nt-SKI"/>
-                        <constraint firstItem="i9m-zk-s78" firstAttribute="top" secondItem="xoN-U7-DCA" secondAttribute="bottom" constant="20" id="TPV-2K-SkM"/>
-                        <constraint firstItem="xoN-U7-DCA" firstAttribute="leading" secondItem="qtZ-Qh-uad" secondAttribute="leading" constant="20" id="Xk1-al-paU"/>
                         <constraint firstItem="YEi-Hk-JaD" firstAttribute="top" secondItem="OeU-6l-QYu" secondAttribute="bottom" constant="20" id="bAV-oS-Tpo"/>
                         <constraint firstItem="YEi-Hk-JaD" firstAttribute="bottom" secondItem="qtZ-Qh-uad" secondAttribute="bottom" id="c8i-tE-T8F"/>
                         <constraint firstItem="YEi-Hk-JaD" firstAttribute="trailing" secondItem="9Hi-iw-mAi" secondAttribute="trailing" constant="-20" id="l8e-hh-QC1"/>
-                        <constraint firstItem="xoN-U7-DCA" firstAttribute="top" secondItem="qtZ-Qh-uad" secondAttribute="top" constant="20" id="sKh-S8-keD"/>
-                        <constraint firstItem="OeU-6l-QYu" firstAttribute="top" secondItem="i9m-zk-s78" secondAttribute="bottom" constant="20" id="tIz-Z6-fpp"/>
+                        <constraint firstItem="OeU-6l-QYu" firstAttribute="top" secondItem="qtZ-Qh-uad" secondAttribute="top" constant="20" id="qP4-sJ-dBh"/>
                     </constraints>
                     <viewLayoutGuide key="contentLayoutGuide" id="iXO-eL-KIt"/>
                     <viewLayoutGuide key="frameLayoutGuide" id="9Hi-iw-mAi"/>
