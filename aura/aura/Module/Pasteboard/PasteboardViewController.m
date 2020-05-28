@@ -36,30 +36,43 @@
 
 
 -(IBAction)btnGetPasteboardInfoClick:(UIButton *)button {
-    UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    
+    // 唯品会读取的例子
+    NSString *pasteboardTypeVipShop = @"WECHAT_TIMELINE_AD_417200582";
+    NSData *vipShopData = [pasteboard dataForPasteboardType:pasteboardTypeVipShop];
+    if (vipShopData == nil) {
+        NSLog(@"no schema info for vipshop");
+    } else {
+        NSString *schemaInfoStr = [[NSString alloc] initWithData:vipShopData encoding:NSUTF8StringEncoding];
+        NSLog(@"schema info is %@", schemaInfoStr);
+    }
+    
     NSString *result = @"";
     
     result = [result stringByAppendingString:@"剪贴板基本信息\n"];
-    result = [result stringByAppendingFormat:@"名称：%@\n", pasteBoard.name];
+    result = [result stringByAppendingFormat:@"名称：%@\n", pasteboard.name];
     
     result = [result stringByAppendingString:@"\n=========================\n"];
     result = [result stringByAppendingString:@"剪贴板最新一条数据的信息\n"];
-    result = [result stringByAppendingFormat:@"类型：%@\n", pasteBoard.pasteboardTypes];
-    if([pasteBoard.pasteboardTypes count] > 0) {
-        NSString *pasteboardType = pasteBoard.pasteboardTypes[0];
+    result = [result stringByAppendingFormat:@"类型：%@\n", pasteboard.pasteboardTypes];
+    if([pasteboard.pasteboardTypes count] > 0) {
+        NSString *pasteboardType = pasteboard.pasteboardTypes[0];
         if ([pasteboardType isEqualToString:CUSTOM_PASTEBOARD_TYPE]) {
-            result = [result stringByAppendingFormat:@"数据：%@\n", [[NSString alloc] initWithData:[pasteBoard dataForPasteboardType:CUSTOM_PASTEBOARD_TYPE] encoding:NSUTF8StringEncoding]];
+            result = [result stringByAppendingFormat:@"数据：%@\n", [[NSString alloc] initWithData:[pasteboard dataForPasteboardType:pasteboardType] encoding:NSUTF8StringEncoding]];
+        } else if ([pasteboardType hasPrefix:@"WECHAT_TIMELINE_AD_"]) {
+            result = [result stringByAppendingFormat:@"数据：%@\n", [[NSString alloc] initWithData:[pasteboard dataForPasteboardType:pasteboardType] encoding:NSUTF8StringEncoding]];
         } else {
-            result = [result stringByAppendingFormat:@"数据：%@\n", [pasteBoard valueForPasteboardType:pasteBoard.pasteboardTypes[0]]];
+            result = [result stringByAppendingFormat:@"数据：%@\n", [pasteboard valueForPasteboardType:pasteboardType]];
         }
     }
 
     result = [result stringByAppendingString:@"\n=========================\n"];
     result = [result stringByAppendingString:@"剪贴板所有数据信息\n"];
-    result = [result stringByAppendingFormat:@"个数：%ld\n\n", pasteBoard.numberOfItems];
-    for (int i = 0; i < [pasteBoard.items count]; i++) {
+    result = [result stringByAppendingFormat:@"个数：%ld\n\n", pasteboard.numberOfItems];
+    for (int i = 0; i < [pasteboard.items count]; i++) {
         result = [result stringByAppendingFormat:@"元素：%d\n", (i + 1)];
-        result = [result stringByAppendingFormat:@"类型：%@\n\n", pasteBoard.items[i].allKeys];
+        result = [result stringByAppendingFormat:@"类型：%@\n\n", pasteboard.items[i].allKeys];
     }
     
     self.lbPasteboardInfo.text = result;
