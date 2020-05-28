@@ -62,6 +62,7 @@
     }
     
     self.lbPasteboardInfo.text = result;
+    NSLog(@"%@", result);
 }
 
 @end
