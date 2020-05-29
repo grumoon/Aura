@@ -19,6 +19,8 @@
 		CD020D83247E5EBD00E1F1F9 /* ModuleInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CD020D82247E5EBD00E1F1F9 /* ModuleInfo.m */; };
 		CD020D87247E5FCB00E1F1F9 /* StorageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD020D85247E5FCB00E1F1F9 /* StorageViewController.m */; };
 		CD020D88247E5FCB00E1F1F9 /* StorageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD020D86247E5FCB00E1F1F9 /* StorageViewController.xib */; };
+		CD6477F32480F0DD00C0F120 /* DeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6477F12480F0DD00C0F120 /* DeviceViewController.m */; };
+		CD6477F42480F0DD00C0F120 /* DeviceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD6477F22480F0DD00C0F120 /* DeviceViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,9 @@
 		CD020D84247E5FCB00E1F1F9 /* StorageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StorageViewController.h; sourceTree = "<group>"; };
 		CD020D85247E5FCB00E1F1F9 /* StorageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StorageViewController.m; sourceTree = "<group>"; };
 		CD020D86247E5FCB00E1F1F9 /* StorageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StorageViewController.xib; sourceTree = "<group>"; };
+		CD6477F02480F0DD00C0F120 /* DeviceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceViewController.h; sourceTree = "<group>"; };
+		CD6477F12480F0DD00C0F120 /* DeviceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceViewController.m; sourceTree = "<group>"; };
+		CD6477F22480F0DD00C0F120 /* DeviceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +98,7 @@
 		CD020D79247E583300E1F1F9 /* Module */ = {
 			isa = PBXGroup;
 			children = (
+				CD6477EF2480F09800C0F120 /* Device */,
 				CD020D7B247E587200E1F1F9 /* Pasteboard */,
 				CD020D7A247E585E00E1F1F9 /* Storage */,
 				CD020D81247E5EBD00E1F1F9 /* ModuleInfo.h */,
@@ -119,6 +125,16 @@
 				CD020D7E247E58F200E1F1F9 /* PasteboardViewController.xib */,
 			);
 			path = Pasteboard;
+			sourceTree = "<group>";
+		};
+		CD6477EF2480F09800C0F120 /* Device */ = {
+			isa = PBXGroup;
+			children = (
+				CD6477F02480F0DD00C0F120 /* DeviceViewController.h */,
+				CD6477F12480F0DD00C0F120 /* DeviceViewController.m */,
+				CD6477F22480F0DD00C0F120 /* DeviceViewController.xib */,
+			);
+			path = Device;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -178,6 +194,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD6477F42480F0DD00C0F120 /* DeviceViewController.xib in Resources */,
 				CD020D70247E158E00E1F1F9 /* LaunchScreen.storyboard in Resources */,
 				CD020D80247E58F200E1F1F9 /* PasteboardViewController.xib in Resources */,
 				CD020D6D247E158E00E1F1F9 /* Assets.xcassets in Resources */,
@@ -193,6 +210,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD6477F32480F0DD00C0F120 /* DeviceViewController.m in Sources */,
 				CD020D68247E158C00E1F1F9 /* ViewController.m in Sources */,
 				CD020D62247E158C00E1F1F9 /* AppDelegate.m in Sources */,
 				CD020D87247E5FCB00E1F1F9 /* StorageViewController.m in Sources */,

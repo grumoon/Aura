@@ -34,6 +34,12 @@
     moduleInfo.vcClassName = @"StorageViewController";
 
     [self.dataArray addObject:moduleInfo];
+    
+    moduleInfo = [[ModuleInfo alloc] init];
+    moduleInfo.name = @"设备";
+    moduleInfo.vcClassName = @"DeviceViewController";
+
+    [self.dataArray addObject:moduleInfo];
 }
 
 - (NSMutableArray *)dataArray {
@@ -70,6 +76,8 @@
     ViewController *vc = [[NSClassFromString(moduleInfo.vcClassName) alloc] init];
     vc.title = moduleInfo.name;
     [self.navigationController pushViewController:vc animated:YES];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 @end

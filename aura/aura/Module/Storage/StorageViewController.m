@@ -16,7 +16,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    self.tvDisplay.editable = NO;
+    
+    [self displayStorageInfo];
+
 }
 
 /*
@@ -28,5 +32,41 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+
+- (void)displayStorageInfo {
+    NSString *displayInfo = @"";
+    
+    NSString *bundlePath = [[NSBundle mainBundle]bundlePath];
+    NSLog(@"bundle path is %@", bundlePath);
+    displayInfo = [displayInfo stringByAppendingFormat:@"Bundle Path：%@\n", bundlePath];
+    
+    // Home
+    NSString *homeDir = NSHomeDirectory();
+    NSLog(@"home dir is %@", homeDir);
+    displayInfo = [displayInfo stringByAppendingFormat:@"\nHome Path：%@\n", homeDir];
+    
+    // Document
+    NSString *docDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSLog(@"doc dir is %@", docDir);
+    displayInfo = [displayInfo stringByAppendingFormat:@"\nDocument Path：%@\n", docDir];
+    
+    // Library
+    NSString *libraryDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSLog(@"library dir is %@", libraryDir);
+    displayInfo = [displayInfo stringByAppendingFormat:@"\nLibrary Path：%@\n", libraryDir];
+    
+    // Library/Caches
+    NSString *cachesDir = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSLog(@"caches dir is %@", cachesDir);
+    displayInfo = [displayInfo stringByAppendingFormat:@"\nCaches Path：%@\n", cachesDir];
+    
+    // Temp
+    NSString *tempPath  = NSTemporaryDirectory();
+    NSLog(@"temp dir is %@", tempPath);
+    displayInfo = [displayInfo stringByAppendingFormat:@"\nTemp Path：%@\n", tempPath];
+   
+    self.tvDisplay.text = displayInfo;
+}
 
 @end

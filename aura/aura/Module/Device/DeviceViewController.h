@@ -1,8 +1,8 @@
 //
-//  StorageViewController.h
+//  DeviceViewController.h
 //  aura
 //
-//  Created by Grumoon on 2020/5/27.
+//  Created by Grumoon on 2020/5/29.
 //  Copyright © 2020 Grumoon. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface StorageViewController : UIViewController
+@interface DeviceViewController : UIViewController
 
 @property (nonatomic, strong) IBOutlet UITextView *tvDisplay;
 

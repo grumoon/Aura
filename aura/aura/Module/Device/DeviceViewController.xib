@@ -7,9 +7,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StorageViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DeviceViewController">
             <connections>
-                <outlet property="tvDisplay" destination="y4l-HG-Obc" id="h08-eJ-xCO"/>
+                <outlet property="tvDisplay" destination="6NF-8b-qEs" id="fLs-93-Ixu"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -18,7 +18,7 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="y4l-HG-Obc">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6NF-8b-qEs">
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -28,10 +28,10 @@
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>
-                <constraint firstItem="y4l-HG-Obc" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="DLh-xO-4LD"/>
-                <constraint firstItem="y4l-HG-Obc" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="WFL-1y-HYk"/>
-                <constraint firstItem="y4l-HG-Obc" firstAttribute="bottom" secondItem="Q5M-cg-NOt" secondAttribute="bottom" id="uIf-AE-yvZ"/>
-                <constraint firstItem="y4l-HG-Obc" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="v8C-K8-Eud"/>
+                <constraint firstItem="6NF-8b-qEs" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="8cg-wg-kMW"/>
+                <constraint firstItem="6NF-8b-qEs" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="di1-aj-DxY"/>
+                <constraint firstItem="6NF-8b-qEs" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="nxb-Nw-dr5"/>
+                <constraint firstItem="6NF-8b-qEs" firstAttribute="bottom" secondItem="Q5M-cg-NOt" secondAttribute="bottom" id="rdV-wP-YED"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <point key="canvasLocation" x="132" y="137"/>
