@@ -16,9 +16,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     self.tvDisplay.editable = NO;
-    
+
     [self displayDeviceInfo];
 }
 
@@ -32,10 +32,28 @@
 }
 */
 
-
-
 - (void)displayDeviceInfo {
+    NSString *displayInfo = @"";
+
+    UIDevice *currentDevice = [UIDevice currentDevice];
+    NSString *deviceName = currentDevice.name;    //设备名称
+    NSString *deviceModel = currentDevice.model;    //设备类别
+    NSString *deviceLocalizedModel = currentDevice.localizedModel;    //设备本地化版本
+    NSString *deviceSystemName = currentDevice.systemName;    //设备运行的系统
+    NSString *deviceSystemVersion = currentDevice.systemVersion;    //当前系统版本
+    NSString *deviceUUIDString = currentDevice.identifierForVendor.UUIDString;    //系统识别码
+
+    displayInfo = [displayInfo stringByAppendingFormat:@"设备信息\n"];
+    displayInfo = [displayInfo stringByAppendingFormat:@"Name：%@\n", deviceName];
+    displayInfo = [displayInfo stringByAppendingFormat:@"Model：%@\n", deviceModel];
+    displayInfo = [displayInfo stringByAppendingFormat:@"LocalizedModel：%@\n", deviceLocalizedModel];
+    displayInfo = [displayInfo stringByAppendingFormat:@"SystemName：%@\n", deviceSystemName];
+    displayInfo = [displayInfo stringByAppendingFormat:@"SystemVersion：%@\n", deviceSystemVersion];
+    displayInfo = [displayInfo stringByAppendingFormat:@"UUID：%@\n", deviceUUIDString];
     
+    self.tvDisplay.text = displayInfo;
+    
+    NSLog(@"%@", displayInfo);
 }
 
 @end
