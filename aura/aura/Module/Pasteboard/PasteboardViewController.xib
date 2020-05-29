@@ -30,15 +30,15 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xoN-U7-DCA">
-                            <rect key="frame" x="20" y="20" width="68" height="30"/>
-                            <state key="normal" title="添加数据1"/>
+                            <rect key="frame" x="20" y="20" width="138" height="30"/>
+                            <state key="normal" title="设置自定义类型数据"/>
                             <connections>
                                 <action selector="btnAddValue1Click:" destination="-2" eventType="touchUpInside" id="qLt-dz-Z7z"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i9m-zk-s78">
-                            <rect key="frame" x="20" y="70" width="71" height="30"/>
-                            <state key="normal" title="添加数据2"/>
+                            <rect key="frame" x="20" y="70" width="92" height="30"/>
+                            <state key="normal" title="批量添加数据"/>
                             <connections>
                                 <action selector="btnAddValue2Click:" destination="-2" eventType="touchUpInside" id="2EW-PF-osr"/>
                             </connections>
