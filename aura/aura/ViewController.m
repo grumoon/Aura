@@ -40,6 +40,12 @@
     moduleInfo.vcClassName = @"DeviceViewController";
 
     [self.dataArray addObject:moduleInfo];
+    
+    moduleInfo = [[ModuleInfo alloc] init];
+    moduleInfo.name = @"分页指示";
+    moduleInfo.vcClassName = @"PageIndicatorViewController";
+
+    [self.dataArray addObject:moduleInfo];
 }
 
 - (NSMutableArray *)dataArray {
