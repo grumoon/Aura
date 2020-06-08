@@ -23,6 +23,7 @@
 		CD156829248D002D00A5E65F /* PageIndicatorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD156827248D002D00A5E65F /* PageIndicatorViewController.xib */; };
 		CD6477F32480F0DD00C0F120 /* DeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6477F12480F0DD00C0F120 /* DeviceViewController.m */; };
 		CD6477F42480F0DD00C0F120 /* DeviceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD6477F22480F0DD00C0F120 /* DeviceViewController.xib */; };
+		CDFC2C30248D49DB00FA12ED /* GPageIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = CDFC2C2F248D49DB00FA12ED /* GPageIndicator.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,8 @@
 		CD6477F02480F0DD00C0F120 /* DeviceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceViewController.h; sourceTree = "<group>"; };
 		CD6477F12480F0DD00C0F120 /* DeviceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceViewController.m; sourceTree = "<group>"; };
 		CD6477F22480F0DD00C0F120 /* DeviceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceViewController.xib; sourceTree = "<group>"; };
+		CDFC2C2E248D49DB00FA12ED /* GPageIndicator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPageIndicator.h; sourceTree = "<group>"; };
+		CDFC2C2F248D49DB00FA12ED /* GPageIndicator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GPageIndicator.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +139,7 @@
 		CD156824248CFEDE00A5E65F /* PageIndicator */ = {
 			isa = PBXGroup;
 			children = (
+				CDFC2C2D248D494500FA12ED /* UI */,
 				CD156825248D002D00A5E65F /* PageIndicatorViewController.h */,
 				CD156826248D002D00A5E65F /* PageIndicatorViewController.m */,
 				CD156827248D002D00A5E65F /* PageIndicatorViewController.xib */,
@@ -151,6 +155,15 @@
 				CD6477F22480F0DD00C0F120 /* DeviceViewController.xib */,
 			);
 			path = Device;
+			sourceTree = "<group>";
+		};
+		CDFC2C2D248D494500FA12ED /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				CDFC2C2E248D49DB00FA12ED /* GPageIndicator.h */,
+				CDFC2C2F248D49DB00FA12ED /* GPageIndicator.m */,
+			);
+			path = UI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -227,6 +240,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDFC2C30248D49DB00FA12ED /* GPageIndicator.m in Sources */,
 				CD6477F32480F0DD00C0F120 /* DeviceViewController.m in Sources */,
 				CD020D68247E158C00E1F1F9 /* ViewController.m in Sources */,
 				CD020D62247E158C00E1F1F9 /* AppDelegate.m in Sources */,
@@ -378,6 +392,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7W5WN858W9;
 				INFOPLIST_FILE = aura/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -395,6 +410,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7W5WN858W9;
 				INFOPLIST_FILE = aura/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

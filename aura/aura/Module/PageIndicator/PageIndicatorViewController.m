@@ -7,6 +7,7 @@
 //
 
 #import "PageIndicatorViewController.h"
+#import "GPageIndicator.h"
 
 
 #define PAGE_TOTAL_COUNT 5
@@ -19,6 +20,7 @@
 @property (nonatomic, strong) IBOutlet UIView *container;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIPageControl *pageCtrl;
+@property (nonatomic, strong) GPageIndicator *pageIndicator;
 
 @property (nonatomic, strong) NSMutableArray *viewArray;
 
@@ -70,6 +72,7 @@
 
     [self.container addSubview:self.scrollView];
     [self.container addSubview:self.pageCtrl];
+    [self.container addSubview:self.pageIndicator];
 
     self.currentIndex = 0;
     
@@ -95,25 +98,20 @@
     
     self.scrollView.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height);
     
-    NSLog(@"self.pageCtrl.frame [%f, %f, %f, %f]",
-          self.pageCtrl.frame.origin.x,
-          self.pageCtrl.frame.origin.x,
-          self.pageCtrl.frame.size.width,
-          self.pageCtrl.frame.size.height);
     
     self.pageCtrl.frame = CGRectMake(0,
                                      self.container.frame.size.height - 10 - self.pageCtrl.frame.size.height,
                                      self.container.frame.size.width,
                                      self.pageCtrl.frame.size.height);
-    
-    NSLog(@"self.pageCtrl.frame [%f, %f, %f, %f]",
-    self.pageCtrl.frame.origin.x,
-    self.pageCtrl.frame.origin.x,
-    self.pageCtrl.frame.size.width,
-    self.pageCtrl.frame.size.height);
-    
+        
     self.pageCtrl.currentPage = self.currentIndex;
     
+    
+    
+    self.pageIndicator.frame = CGRectMake((self.container.frame.size.width - self.pageIndicator.frame.size.width) / 2,
+                                          self.container.frame.size.height - 50 - self.pageIndicator.frame.size.height,
+                                          self.pageIndicator.frame.size.width,
+                                          self.pageIndicator.frame.size.height);
     
 }
 
@@ -145,6 +143,15 @@
     }
 
     return _pageCtrl;
+}
+
+- (GPageIndicator *)pageIndicator {
+    if (_pageIndicator == nil) {
+        _pageIndicator = [[GPageIndicator alloc] initWithFrame:CGRectZero];
+        _pageIndicator.userInteractionEnabled = NO;
+        _pageIndicator.numberOfPages = PAGE_TOTAL_COUNT;
+    }
+    return _pageIndicator;
 }
 
 
