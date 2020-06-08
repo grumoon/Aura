@@ -15,7 +15,6 @@
 #define INDICATOR_HEIGHT 7.0
 
 #define CURRENT_INDICATOR_WIDTH 28.0
-#define CURRENT_INDICATOR_HEIGHT 7.0
 
 #define INDICATOR_SPACING 7.0
 
@@ -87,8 +86,8 @@
 - (void)setProgressOfTotal:(double)progressOfTotal {
     if (progressOfTotal > _numberOfPages) {
         _progressOfTotal = _numberOfPages;
-    } else if (progressOfTotal < 0.0) {
-        _progressOfTotal = 0.0;
+    } else if (progressOfTotal < -1.0) {
+        _progressOfTotal = -1.0;
     } else {
         _progressOfTotal = progressOfTotal;
     }
@@ -103,15 +102,24 @@
     CGFloat baseY = 0.0 + FRAME_EXTRA;
 
     for (int i = 0; i < self.numberOfPages; i++) {
-        if (i == 0) {
-            CGRect rect = CGRectMake(baseX, baseY, CURRENT_INDICATOR_WIDTH, CURRENT_INDICATOR_HEIGHT);
-            [self drawIndicator:context rect:rect];
-            baseX += CURRENT_INDICATOR_WIDTH + INDICATOR_SPACING;
-        } else {
-            CGRect rect = CGRectMake(baseX, baseY, INDICATOR_WIDTH, INDICATOR_HEIGHT);
-            [self drawIndicator:context rect:rect];
-            baseX += INDICATOR_WIDTH + INDICATOR_SPACING;
+        CGFloat diff = fabs(self.progressOfTotal - i);
+        
+        if (i == 0 && self.progressOfTotal > (self.numberOfPages - 1)) {
+            diff = fabs(self.numberOfPages - self.progressOfTotal);
+        } else if (i == (self.numberOfPages - 1) && self.progressOfTotal < 0.0) {
+            diff = fabs(-1.0 - self.progressOfTotal);
         }
+        
+        CGFloat width = 0.0;
+        if (diff >= 1.0) {
+            width = INDICATOR_WIDTH;
+        } else {
+            width = INDICATOR_WIDTH + (CURRENT_INDICATOR_WIDTH - INDICATOR_WIDTH) * (1.0 - diff) / 1.0;
+        }
+        
+        CGRect rect = CGRectMake(baseX, baseY, width, INDICATOR_HEIGHT);
+        [self drawIndicator:context rect:rect];
+        baseX += width + INDICATOR_SPACING;
     }
 }
 

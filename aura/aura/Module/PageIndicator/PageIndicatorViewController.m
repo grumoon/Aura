@@ -14,6 +14,7 @@
 
 #define CAROUSEL_INTERVAL 4.0 //轮播间隔
 #define CAROUSEL_ANIMATION_DURATION 1.0 //轮播切换动画时长
+#define CAROUSEL_ANIMATION_CHECK_INTERVAL 0.05
 
 @interface PageIndicatorViewController () <UIScrollViewDelegate>
 
@@ -290,6 +291,21 @@
         self.turnPageAnimatingFlag = NO;
         [self scrollViewDidEndScrollingAnimation:self.scrollView];
     }];
+    
+    NSDate *date = [NSDate date];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+        CGFloat totalTime = 0.0;
+        while (self.turnPageAnimatingFlag) {
+            [NSThread sleepForTimeInterval:CAROUSEL_ANIMATION_CHECK_INTERVAL];
+            totalTime += CAROUSEL_ANIMATION_CHECK_INTERVAL;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSTimeInterval timeDiff = [[NSDate date] timeIntervalSinceDate:date];
+                CGFloat progress = (self.scrollView.contentOffset.x / self.scrollView.frame.size.width) - 1.0;
+                progress = (progress - 1.0) + timeDiff / CAROUSEL_ANIMATION_DURATION;
+                [self updatePageIndicatorWithProgres:progress];
+            });
+        };
+    });
 }
 
 
@@ -304,6 +320,11 @@
     if (index != self.pageCtrl.currentPage) {
         self.pageCtrl.currentPage = index;
     }
+    
+    if (!self.turnPageAnimatingFlag) {
+        [self updatePageIndicatorByScrollView];
+    }
+    
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(scrollViewDidEndScrollingAnimation:) object:nil];
 }
 
@@ -317,6 +338,8 @@
     if (!decelerate) {
         self.draggingFlag = NO;
         [self tryStartAutoCarousel];
+        
+        [self updatePageIndicatorByScrollView];
     }
 }
 
@@ -343,8 +366,18 @@
 
     self.draggingFlag = NO;
     [self tryStartAutoCarousel];
+    
+    [self updatePageIndicatorByScrollView];
 }
 
+#pragma mark - GPageIndicator
+- (void)updatePageIndicatorWithProgres:(CGFloat)progress {
+    self.pageIndicator.progressOfTotal = progress;
+}
 
+- (void)updatePageIndicatorByScrollView {
+    CGFloat progress = (self.scrollView.contentOffset.x / self.scrollView.frame.size.width) - 1.0;
+    self.pageIndicator.progressOfTotal = progress;
+}
 
 @end
