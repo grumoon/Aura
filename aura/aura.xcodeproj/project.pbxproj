@@ -11,7 +11,6 @@
 		CD020D65247E158C00E1F1F9 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CD020D64247E158C00E1F1F9 /* SceneDelegate.m */; };
 		CD020D68247E158C00E1F1F9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD020D67247E158C00E1F1F9 /* ViewController.m */; };
 		CD020D6B247E158C00E1F1F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD020D69247E158C00E1F1F9 /* Main.storyboard */; };
-		CD020D6D247E158E00E1F1F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD020D6C247E158E00E1F1F9 /* Assets.xcassets */; };
 		CD020D70247E158E00E1F1F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD020D6E247E158E00E1F1F9 /* LaunchScreen.storyboard */; };
 		CD020D73247E158E00E1F1F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CD020D72247E158E00E1F1F9 /* main.m */; };
 		CD020D7F247E58F200E1F1F9 /* PasteboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD020D7D247E58F200E1F1F9 /* PasteboardViewController.m */; };
@@ -21,6 +20,7 @@
 		CD020D88247E5FCB00E1F1F9 /* StorageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD020D86247E5FCB00E1F1F9 /* StorageViewController.xib */; };
 		CD156828248D002D00A5E65F /* PageIndicatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD156826248D002D00A5E65F /* PageIndicatorViewController.m */; };
 		CD156829248D002D00A5E65F /* PageIndicatorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD156827248D002D00A5E65F /* PageIndicatorViewController.xib */; };
+		CD1568B4248F781B00A5E65F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD020D6C247E158E00E1F1F9 /* Assets.xcassets */; };
 		CD6477F32480F0DD00C0F120 /* DeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD6477F12480F0DD00C0F120 /* DeviceViewController.m */; };
 		CD6477F42480F0DD00C0F120 /* DeviceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD6477F22480F0DD00C0F120 /* DeviceViewController.xib */; };
 		CDFC2C30248D49DB00FA12ED /* GPageIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = CDFC2C2F248D49DB00FA12ED /* GPageIndicator.m */; };
@@ -227,7 +227,7 @@
 				CD156829248D002D00A5E65F /* PageIndicatorViewController.xib in Resources */,
 				CD020D70247E158E00E1F1F9 /* LaunchScreen.storyboard in Resources */,
 				CD020D80247E58F200E1F1F9 /* PasteboardViewController.xib in Resources */,
-				CD020D6D247E158E00E1F1F9 /* Assets.xcassets in Resources */,
+				CD1568B4248F781B00A5E65F /* Assets.xcassets in Resources */,
 				CD020D6B247E158C00E1F1F9 /* Main.storyboard in Resources */,
 				CD020D88247E5FCB00E1F1F9 /* StorageViewController.xib in Resources */,
 			);

@@ -85,10 +85,19 @@
         view.frame = CGRectMake(originX, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
         view.layer.backgroundColor = UIColor.blackColor.CGColor;
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 40, 280, 80)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 80)];
         label.backgroundColor = [UIColor grayColor];
         label.text = [NSString stringWithFormat: @"第 %ld 页面", [self getDataIndexFromViewIndex:i] + 1];
         [view addSubview:label];
+        
+        UIImageView *imageView = [[UIImageView alloc] init];
+        imageView.frame = CGRectMake(0, self.scrollView.frame.size.height - 375 , self.scrollView.frame.size.width, 375);
+        NSString *imageName = [NSString stringWithFormat:@"page_indicator_%ld", [self getDataIndexFromViewIndex:i] + 1];
+        UIImage *image = [UIImage imageNamed:imageName];
+        imageView.image = image;
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        [view addSubview:imageView];
         
         [self.viewArray addObject:view];
         [self.scrollView addSubview:view];
@@ -110,7 +119,7 @@
     
     
     self.pageIndicator.frame = CGRectMake((self.container.frame.size.width - self.pageIndicator.frame.size.width) / 2,
-                                          self.container.frame.size.height - 50 - self.pageIndicator.frame.size.height,
+                                          self.container.frame.size.height - 100 - self.pageIndicator.frame.size.height,
                                           self.pageIndicator.frame.size.width,
                                           self.pageIndicator.frame.size.height);
     
