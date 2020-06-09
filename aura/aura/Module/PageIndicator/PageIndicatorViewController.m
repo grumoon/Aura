@@ -14,7 +14,6 @@
 
 #define CAROUSEL_INTERVAL 4.0 //轮播间隔
 #define CAROUSEL_ANIMATION_DURATION 1.0 //轮播切换动画时长
-#define CAROUSEL_ANIMATION_CHECK_INTERVAL 0.05
 
 @interface PageIndicatorViewController () <UIScrollViewDelegate>
 
@@ -84,6 +83,7 @@
     for (int i = 0; i < viewTotalCount; i++) {
         UIView *view = [[UIView alloc] initWithFrame:self.view.bounds];
         view.frame = CGRectMake(originX, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+        view.layer.backgroundColor = UIColor.blackColor.CGColor;
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 40, 280, 80)];
         label.backgroundColor = [UIColor grayColor];
@@ -233,6 +233,7 @@
                withObject:nil
                afterDelay:CAROUSEL_INTERVAL
                   inModes:[NSArray arrayWithObjects:NSDefaultRunLoopMode, NSRunLoopCommonModes, nil]];
+    [self.pageIndicator autoFillCurrent:0.0 duration:CAROUSEL_INTERVAL * 1000];
 }
 
 /**
@@ -243,6 +244,7 @@
     [self.autoCarouselTimer invalidate];
     self.autoCarouselTimer = nil;
     self.carouselRunningFlag = NO;
+    self.pageIndicator.progressOfCurrent = 1.0;
 }
 
 /**
@@ -289,23 +291,14 @@
     }
     completion:^(BOOL finished) {
         self.turnPageAnimatingFlag = NO;
+        [self.pageIndicator autoFillCurrent:0.0 duration:CAROUSEL_INTERVAL * 1000];
         [self scrollViewDidEndScrollingAnimation:self.scrollView];
     }];
     
-    NSDate *date = [NSDate date];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
-        CGFloat totalTime = 0.0;
-        while (self.turnPageAnimatingFlag) {
-            [NSThread sleepForTimeInterval:CAROUSEL_ANIMATION_CHECK_INTERVAL];
-            totalTime += CAROUSEL_ANIMATION_CHECK_INTERVAL;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSTimeInterval timeDiff = [[NSDate date] timeIntervalSinceDate:date];
-                CGFloat progress = (self.scrollView.contentOffset.x / self.scrollView.frame.size.width) - 1.0;
-                progress = (progress - 1.0) + timeDiff / CAROUSEL_ANIMATION_DURATION;
-                [self updatePageIndicatorWithProgres:progress];
-            });
-        };
-    });
+    [self.pageIndicator autoNextPage:(currentViewIndex - 1)
+                            duration:CAROUSEL_ANIMATION_DURATION * 1000
+                 progressOfStartPage:1.0
+                  progressOfNextPage:0.0];
 }
 
 
