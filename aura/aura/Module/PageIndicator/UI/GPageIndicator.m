@@ -77,8 +77,8 @@
 
 - (CGRect)getSelfFrame {
     CGRect frame;
-    frame.origin.x = 0.0;
-    frame.origin.y = 0.0;
+    frame.origin.x = self.frame.origin.x;
+    frame.origin.y = self.frame.origin.y;
     frame.size.height = INDICATOR_HEIGHT + FRAME_EXTRA * 2;
     CGFloat width = 0.0;
     for (int i = 0; i < _numberOfPages; i++) {
@@ -143,6 +143,11 @@
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextClearRect(context, rect);
+    
+    if (_numberOfPages <= 1) {
+        return;
+    }
+    
     CGFloat baseX = 0.0 + FRAME_EXTRA;
     CGFloat baseY = 0.0 + FRAME_EXTRA;
 
