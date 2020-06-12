@@ -50,6 +50,9 @@
 @property (nonatomic, assign) NSTimeInterval fillCurrentStartTimeMs; //自动填充当前页 开始时间
 @property (nonatomic, assign) NSTimeInterval fillCurrentDuration; //自动填充当前页 持续时间
 
+@property (nonatomic, strong) UIColor *indicatorColorBg;
+@property (nonatomic, strong) UIColor *indicatorColorShadow;
+
 @end
 
 @implementation GPageIndicator
@@ -65,6 +68,16 @@
         
         _nextPageProgressOfStartPage = -1.0;
         _nextPageProgressOfNextPage = -1.0;
+        
+        _indicatorColorBg = [UIColor colorWithRed:INDICATOR_COLOR_BG_R
+                                            green:INDICATOR_COLOR_BG_G
+                                             blue:INDICATOR_COLOR_BG_B
+                                            alpha:INDICATOR_COLOR_BG_A];
+
+        _indicatorColorShadow = [UIColor colorWithRed:INDICATOR_COLOR_SHADOW_R
+                                                green:INDICATOR_COLOR_SHADOW_G
+                                                 blue:INDICATOR_COLOR_SHADOW_B
+                                                alpha:INDICATOR_COLOR_SHADOW_A];
     }
     return self;
 }
@@ -183,12 +196,12 @@
             }
             
             CGFloat currentIndicatorWidth = INDICATOR_WIDTH + (indicatorRect.size.width - INDICATOR_WIDTH) * _progressOfCurrent;
-            CGRect currentindicatorRect = CGRectMake(indicatorRect.origin.x,
+            CGRect currentIndicatorRect = CGRectMake(indicatorRect.origin.x,
                                                      indicatorRect.origin.y,
                                                      currentIndicatorWidth,
                                                      indicatorRect.size.height);
         
-            [self drawCurrentIndicator:context rect:currentindicatorRect alpha:currentIndicatorAlpha];
+            [self drawCurrentIndicator:context rect:currentIndicatorRect alpha:currentIndicatorAlpha];
         }
     }
 }
@@ -198,24 +211,16 @@
     
     CGContextSetLineWidth(context, 1.0);
         
-    UIColor *fillColor = [UIColor colorWithRed:INDICATOR_COLOR_BG_R
-                                         green:INDICATOR_COLOR_BG_G
-                                          blue:INDICATOR_COLOR_BG_B
-                                         alpha:INDICATOR_COLOR_BG_A];
+    CGContextSetFillColorWithColor(context, self.indicatorColorBg.CGColor);
+    CGContextSetStrokeColorWithColor(context, self.indicatorColorBg.CGColor);
+    //CGContextSetShadowWithColor(context, CGSizeMake(0.0, 0.0), INDICATOR_SHADOW_BLUR, self.indicatorColorShadow.CGColor);
     
-    // shadow
-    UIColor *shadowColor = [UIColor colorWithRed:INDICATOR_COLOR_SHADOW_R
-                                           green:INDICATOR_COLOR_SHADOW_G
-                                            blue:INDICATOR_COLOR_SHADOW_B
-                                           alpha:INDICATOR_COLOR_SHADOW_A];
-    
-    CGContextSetFillColorWithColor(context, fillColor.CGColor);
-    CGContextSetStrokeColorWithColor(context, fillColor.CGColor);
-    CGContextSetShadowWithColor(context, CGSizeMake(0.0, 0.0), INDICATOR_SHADOW_BLUR, shadowColor.CGColor);
-    
-    CGContextAddPath(context, [self makeRoundedRectanglePath:rect]);
+    CGMutablePathRef path = [self makeRoundedRectanglePath:rect];
+    CGContextAddPath(context, path);
 
     CGContextDrawPath(context, kCGPathFill);
+
+    CGPathRelease(path);
     
     CGContextRestoreGState(context);
     
@@ -234,9 +239,12 @@
     CGContextSetFillColorWithColor(context, fillColor.CGColor);
     CGContextSetStrokeColorWithColor(context, fillColor.CGColor);
     
-    CGContextAddPath(context, [self makeRoundedRectanglePath:rect]);
+    CGMutablePathRef path = [self makeRoundedRectanglePath:rect];
+    CGContextAddPath(context, path);
 
     CGContextDrawPath(context, kCGPathFill);
+
+    CGPathRelease(path);
     
     CGContextRestoreGState(context);
 }
@@ -275,7 +283,8 @@
 
 - (void)tryStartDisplayLink {
     if (self.displayLink == nil) {
-        self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkAutoCheck)];
+        self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkAutoCheck)];\
+        self.displayLink.preferredFramesPerSecond = 30;
         [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     }
@@ -297,7 +306,7 @@
     if (self.nextPageRunningFlag) {
         NSTimeInterval autoNextPageCostTime = [[NSDate date] timeIntervalSince1970] * 1000 - self.nextPageStartTimeMs;
         
-        if (autoNextPageCostTime > self.nextPageDuration) {
+        if (self.nextPageDuration <= 0 || autoNextPageCostTime > self.nextPageDuration) {
             // 完成任务
             self.nextPageRunningFlag = NO;
         } else {
@@ -318,7 +327,7 @@
     if (self.fillCurrentRunningFlag) {
         NSTimeInterval autoFillCurrentCostTime = [[NSDate date] timeIntervalSince1970] * 1000 - self.fillCurrentStartTimeMs;
         
-        if (autoFillCurrentCostTime > self.fillCurrentDuration) {
+        if (self.fillCurrentDuration <= 0 || autoFillCurrentCostTime > self.fillCurrentDuration) {
             // 完成任务
             self.fillCurrentRunningFlag = NO;
         } else {
@@ -342,7 +351,7 @@
     NSLog(@"autoNextPage startPage = %ld | duration = %f | progressOfStartPage = %f | progressOfNextPage = %f | runningFlag = %d",
           startPage, duration, progressOfStartPage, progressOfNextPage, self.nextPageRunningFlag);
     
-    if (duration < 0.0) {
+    if (duration <= 0.0) {
         return;
     }
     
@@ -377,7 +386,7 @@
 - (void)autoFillCurrent:(CGFloat)startProgress duration:(NSTimeInterval)duration {
     NSLog(@"autoFillCurrent startProgress = %f | duration = %f | runningFlag = %d", startProgress, duration, self.fillCurrentRunningFlag);
     
-    if (duration < 0.0) {
+    if (duration <= 0.0) {
         return;
     }
     
