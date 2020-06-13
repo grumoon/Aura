@@ -287,7 +287,7 @@
 - (void)tryStartDisplayLink {
     if (self.displayLink == nil) {
         self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkAutoCheck)];\
-        self.displayLink.preferredFramesPerSecond = 60;
+        self.displayLink.preferredFramesPerSecond = 30;
         [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     }
