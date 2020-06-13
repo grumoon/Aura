@@ -8,21 +8,18 @@
 
 #import "GPageIndicator.h"
 
-#define FRAME_EXTRA 2.0
+#define INDICATOR_FRAME_PADDING 2.0
 
-#define INDICATOR_WIDTH 7.0
+#define INDICATOR_MIN_WIDTH 7.0
+#define INDICATOR_MAX_WIDTH 28.0
 #define INDICATOR_HEIGHT 7.0
-
-#define CURRENT_INDICATOR_WIDTH 28.0
-
 #define INDICATOR_SPACING 7.0
+#define INDICATOR_SHADOW_BLUR 1.0
 
 #define INDICATOR_COLOR_BG_R 209.0 / 255.0
 #define INDICATOR_COLOR_BG_G 209.0 / 255.0
 #define INDICATOR_COLOR_BG_B 209.0 / 255.0
 #define INDICATOR_COLOR_BG_A 1.0
-
-#define INDICATOR_SHADOW_BLUR 1.0
 
 #define INDICATOR_COLOR_SHADOW_R 0.0
 #define INDICATOR_COLOR_SHADOW_G 0.0
@@ -34,6 +31,8 @@
 #define INDICATOR_COLOR_INNER_B 1.0
 
 #define INDICATOR_COLOR_INNER_ALPHA_PROGRESS_DIFF_MAX 0.3
+
+#define PROGRESS_OF_CURRENT_INVALID_VALUE -1.0
 
 @interface GPageIndicator()
 @property (nonatomic, strong) CADisplayLink *displayLink;
@@ -92,19 +91,14 @@
     CGRect frame;
     frame.origin.x = self.frame.origin.x;
     frame.origin.y = self.frame.origin.y;
-    frame.size.height = INDICATOR_HEIGHT + FRAME_EXTRA * 2;
-    CGFloat width = 0.0;
-    for (int i = 0; i < _numberOfPages; i++) {
+    frame.size.height = INDICATOR_HEIGHT + INDICATOR_FRAME_PADDING * 2;
+    CGFloat width = INDICATOR_FRAME_PADDING * 2;
+    for (int i = 0; i < self.numberOfPages; i++) {
         if (i == 0) {
-            width += FRAME_EXTRA;
-            width += CURRENT_INDICATOR_WIDTH;
+            width += INDICATOR_MAX_WIDTH;
         } else {
             width += INDICATOR_SPACING;
-            width += INDICATOR_WIDTH;
-        }
-
-        if (i == _numberOfPages - 1) {
-            width += FRAME_EXTRA;
+            width += INDICATOR_MIN_WIDTH;
         }
     }
     frame.size.width = width;
@@ -112,7 +106,11 @@
 }
 
 - (void)setNumberOfPages:(NSInteger)numberOfPages {
-    _numberOfPages = numberOfPages;
+    if (numberOfPages < 0) {
+        _numberOfPages = 0;
+    } else {
+        _numberOfPages = numberOfPages;
+    }
     self.frame = [self getSelfFrame];
 }
 
@@ -139,7 +137,9 @@
     } else {
         _progressOfCurrent = progressOfCurrent;
     }
-    [self setNeedsDisplay];
+    if (!self.hidden) {
+        [self setNeedsDisplay];
+    }
 }
 
 - (void)setProgressOfTotalInternal:(CGFloat)progressOfTotal {
@@ -150,34 +150,36 @@
     } else {
         _progressOfTotal = progressOfTotal;
     }
-    [self setNeedsDisplay];
+    if (!self.hidden) {
+        [self setNeedsDisplay];
+    }
 }
 
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextClearRect(context, rect);
     
-    if (_numberOfPages <= 1) {
+    if (self.numberOfPages <= 1) {
         return;
     }
     
-    CGFloat baseX = 0.0 + FRAME_EXTRA;
-    CGFloat baseY = 0.0 + FRAME_EXTRA;
+    CGFloat baseX = 0.0 + INDICATOR_FRAME_PADDING;
+    CGFloat baseY = 0.0 + INDICATOR_FRAME_PADDING;
 
-    for (int i = 0; i < _numberOfPages; i++) {
-        CGFloat diff = fabs(_progressOfTotal - i);
+    for (int i = 0; i < self.numberOfPages; i++) {
+        CGFloat diff = fabs(self.progressOfTotal - i);
         
-        if (i == 0 && _progressOfTotal > (_numberOfPages - 1)) {
-            diff = fabs(_numberOfPages - _progressOfTotal);
-        } else if (i == (_numberOfPages - 1) && _progressOfTotal < 0.0) {
-            diff = fabs(-1.0 - _progressOfTotal);
+        if (i == 0 && self.progressOfTotal > (self.numberOfPages - 1)) {
+            diff = fabs(self.numberOfPages - self.progressOfTotal);
+        } else if (i == (self.numberOfPages - 1) && self.progressOfTotal < 0.0) {
+            diff = fabs(-1.0 - self.progressOfTotal);
         }
         
         CGFloat indicatorWidth = 0.0;
         if (diff >= 1.0) {
-            indicatorWidth = INDICATOR_WIDTH;
+            indicatorWidth = INDICATOR_MIN_WIDTH;
         } else {
-            indicatorWidth = INDICATOR_WIDTH + (CURRENT_INDICATOR_WIDTH - INDICATOR_WIDTH) * (1.0 - diff) / 1.0;
+            indicatorWidth = INDICATOR_MIN_WIDTH + (INDICATOR_MAX_WIDTH - INDICATOR_MIN_WIDTH) * (1.0 - diff) / 1.0;
         }
         
         CGRect indicatorRect = CGRectMake(baseX, baseY, indicatorWidth, INDICATOR_HEIGHT);
@@ -195,7 +197,7 @@
                 currentIndicatorAlpha = (INDICATOR_COLOR_INNER_ALPHA_PROGRESS_DIFF_MAX - diff) / INDICATOR_COLOR_INNER_ALPHA_PROGRESS_DIFF_MAX;
             }
             
-            CGFloat currentIndicatorWidth = INDICATOR_WIDTH + (indicatorRect.size.width - INDICATOR_WIDTH) * _progressOfCurrent;
+            CGFloat currentIndicatorWidth = INDICATOR_MIN_WIDTH + (indicatorRect.size.width - INDICATOR_MIN_WIDTH) * self.progressOfCurrent;
             CGRect currentIndicatorRect = CGRectMake(indicatorRect.origin.x,
                                                      indicatorRect.origin.y,
                                                      currentIndicatorWidth,
@@ -213,7 +215,7 @@
         
     CGContextSetFillColorWithColor(context, self.indicatorColorBg.CGColor);
     CGContextSetStrokeColorWithColor(context, self.indicatorColorBg.CGColor);
-    //CGContextSetShadowWithColor(context, CGSizeMake(0.0, 0.0), INDICATOR_SHADOW_BLUR, self.indicatorColorShadow.CGColor);
+    CGContextSetShadowWithColor(context, CGSizeMake(0.0, 0.0), INDICATOR_SHADOW_BLUR, self.indicatorColorShadow.CGColor);
     
     CGMutablePathRef path = [self makeRoundedRectanglePath:rect];
     CGContextAddPath(context, path);
@@ -363,8 +365,8 @@
     
     if (startPage < 0) {
         startPage = 0;
-    } else if(startPage > _numberOfPages - 1) {
-        startPage = _numberOfPages - 1;
+    } else if(startPage > self.numberOfPages - 1) {
+        startPage = self.numberOfPages - 1;
     }
 
     self.nextPageStartPage = startPage;
