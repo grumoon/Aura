@@ -72,7 +72,7 @@
                                             green:INDICATOR_COLOR_BG_G
                                              blue:INDICATOR_COLOR_BG_B
                                             alpha:INDICATOR_COLOR_BG_A];
-
+        
         _indicatorColorShadow = [UIColor colorWithRed:INDICATOR_COLOR_SHADOW_R
                                                 green:INDICATOR_COLOR_SHADOW_G
                                                  blue:INDICATOR_COLOR_SHADOW_B
@@ -157,36 +157,40 @@
 
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextClearRect(context, rect);
-    
     if (self.numberOfPages <= 1) {
         return;
     }
     
     CGFloat baseX = 0.0 + INDICATOR_FRAME_PADDING;
     CGFloat baseY = 0.0 + INDICATOR_FRAME_PADDING;
-
+    
     for (int i = 0; i < self.numberOfPages; i++) {
         CGFloat diff = fabs(self.progressOfTotal - i);
-        
+
         if (i == 0 && self.progressOfTotal > (self.numberOfPages - 1)) {
             diff = fabs(self.numberOfPages - self.progressOfTotal);
         } else if (i == (self.numberOfPages - 1) && self.progressOfTotal < 0.0) {
             diff = fabs(-1.0 - self.progressOfTotal);
         }
-        
+
         CGFloat indicatorWidth = 0.0;
         if (diff >= 1.0) {
             indicatorWidth = INDICATOR_MIN_WIDTH;
         } else {
             indicatorWidth = INDICATOR_MIN_WIDTH + (INDICATOR_MAX_WIDTH - INDICATOR_MIN_WIDTH) * (1.0 - diff) / 1.0;
         }
-        
+
         CGRect indicatorRect = CGRectMake(baseX, baseY, indicatorWidth, INDICATOR_HEIGHT);
-        [self drawIndicator:context rect:indicatorRect];
+        [self drawRoundedRectangle:context
+                              rect:indicatorRect
+                         fillColor:self.indicatorColorBg
+                       strokeColor:nil
+                       shadowColor:self.indicatorColorShadow
+                       drawingMode:kCGPathFill];
+
         baseX += indicatorWidth + INDICATOR_SPACING;
-        
-        
+
+
         /**
          画当前 Indicator
          小于 0.5 的，一定最近，认为是当前
@@ -196,82 +200,79 @@
             if (diff < INDICATOR_COLOR_INNER_ALPHA_PROGRESS_DIFF_MAX) {
                 currentIndicatorAlpha = (INDICATOR_COLOR_INNER_ALPHA_PROGRESS_DIFF_MAX - diff) / INDICATOR_COLOR_INNER_ALPHA_PROGRESS_DIFF_MAX;
             }
-            
+
             CGFloat currentIndicatorWidth = INDICATOR_MIN_WIDTH + (indicatorRect.size.width - INDICATOR_MIN_WIDTH) * self.progressOfCurrent;
             CGRect currentIndicatorRect = CGRectMake(indicatorRect.origin.x,
                                                      indicatorRect.origin.y,
                                                      currentIndicatorWidth,
                                                      indicatorRect.size.height);
-        
-            [self drawCurrentIndicator:context rect:currentIndicatorRect alpha:currentIndicatorAlpha];
+
+            UIColor *fillColor = [UIColor colorWithRed:INDICATOR_COLOR_INNER_R
+                                                 green:INDICATOR_COLOR_INNER_G
+                                                  blue:INDICATOR_COLOR_INNER_B
+                                                 alpha:currentIndicatorAlpha];
+            [self drawRoundedRectangle:context
+                                  rect:currentIndicatorRect
+                             fillColor:fillColor
+                           strokeColor:nil
+                           shadowColor:nil
+                           drawingMode:kCGPathFill];
         }
     }
 }
 
-- (void)drawIndicator:(CGContextRef)context rect:(CGRect)rect {
-    CGContextSaveGState(context);
+- (void)drawRoundedRectangle:(CGContextRef)context
+                        rect:(CGRect)rect
+                   fillColor:(UIColor *)fillColor
+                 strokeColor:(UIColor *)strokeColor
+                 shadowColor:(UIColor *)shadowColor
+                 drawingMode:(CGPathDrawingMode)drawingMode {
     
+    CGContextSaveGState(context);
     CGContextSetLineWidth(context, 1.0);
-        
-    CGContextSetFillColorWithColor(context, self.indicatorColorBg.CGColor);
-    CGContextSetStrokeColorWithColor(context, self.indicatorColorBg.CGColor);
-    CGContextSetShadowWithColor(context, CGSizeMake(0.0, 0.0), INDICATOR_SHADOW_BLUR, self.indicatorColorShadow.CGColor);
+    
+    if (fillColor != nil) {
+        CGContextSetFillColorWithColor(context, fillColor.CGColor);
+    }
+    
+    if (strokeColor != nil) {
+        CGContextSetStrokeColorWithColor(context, strokeColor.CGColor);
+    }
+    
+    if (shadowColor != nil) {
+        CGContextSetShadowWithColor(context, CGSizeMake(0.0, 0.0), INDICATOR_SHADOW_BLUR, shadowColor.CGColor);
+    }
     
     CGMutablePathRef path = [self makeRoundedRectanglePath:rect];
     CGContextAddPath(context, path);
-
-    CGContextDrawPath(context, kCGPathFill);
-
-    CGPathRelease(path);
     
-    CGContextRestoreGState(context);
+    CGContextDrawPath(context, drawingMode);
     
-}
-
-- (void)drawCurrentIndicator:(CGContextRef)context rect:(CGRect)rect alpha:(CGFloat)alpha {
-    CGContextSaveGState(context);
-    
-    CGContextSetLineWidth(context, 1.0);
-    
-    UIColor *fillColor = [UIColor colorWithRed:INDICATOR_COLOR_INNER_R
-                                         green:INDICATOR_COLOR_INNER_G
-                                          blue:INDICATOR_COLOR_INNER_B
-                                         alpha:alpha];
-    
-    CGContextSetFillColorWithColor(context, fillColor.CGColor);
-    CGContextSetStrokeColorWithColor(context, fillColor.CGColor);
-    
-    CGMutablePathRef path = [self makeRoundedRectanglePath:rect];
-    CGContextAddPath(context, path);
-
-    CGContextDrawPath(context, kCGPathFill);
-
     CGPathRelease(path);
     
     CGContextRestoreGState(context);
 }
-
 
 - (CGMutablePathRef)makeRoundedRectanglePath:(CGRect)rect {
-    CGFloat radio = rect.size.height / 2;
-
+    CGFloat radio = rect.size.height / 2.0;
+    
     // 矩形的8个关建点
     CGPoint leftTopPoint = CGPointMake(rect.origin.x + 0, rect.origin.y + 0);
-
-    CGPoint centerTopPoint = CGPointMake(rect.origin.x + rect.size.width / 2, rect.origin.y + 0);
+    
+    CGPoint centerTopPoint = CGPointMake(rect.origin.x + rect.size.width / 2.0, rect.origin.y + 0);
     
     CGPoint rightTopPoint = CGPointMake(rect.origin.x + rect.size.width, rect.origin.y + 0);
     
-    CGPoint rightCenterPoint = CGPointMake(rect.origin.x + rect.size.width, rect.origin.y + rect.size.height / 2);
+    CGPoint rightCenterPoint = CGPointMake(rect.origin.x + rect.size.width, rect.origin.y + rect.size.height / 2.0);
     
     CGPoint rightBottomPoint = CGPointMake(rect.origin.x + rect.size.width, rect.origin.y + rect.size.height);
     
-    CGPoint centerBottomPoint = CGPointMake(rect.origin.x + rect.size.width / 2, rect.origin.y + rect.size.height);
+    CGPoint centerBottomPoint = CGPointMake(rect.origin.x + rect.size.width / 2.0, rect.origin.y + rect.size.height);
     
     CGPoint leftBottomPoint = CGPointMake(rect.origin.x + 0, rect.origin.y + rect.size.height);
     
-    CGPoint leftCenterPoint = CGPointMake(rect.origin.x + 0, rect.origin.y + rect.size.height / 2);
-
+    CGPoint leftCenterPoint = CGPointMake(rect.origin.x + 0, rect.origin.y + rect.size.height / 2.0);
+    
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathMoveToPoint(path, NULL, centerTopPoint.x, centerTopPoint.y);
     CGPathAddArcToPoint(path, NULL, rightTopPoint.x, rightTopPoint.y, rightCenterPoint.x, rightCenterPoint.y, radio); // 右上角
@@ -286,7 +287,7 @@
 - (void)tryStartDisplayLink {
     if (self.displayLink == nil) {
         self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkAutoCheck)];\
-        self.displayLink.preferredFramesPerSecond = 30;
+        self.displayLink.preferredFramesPerSecond = 60;
         [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     }
@@ -303,18 +304,18 @@
         [self releaseDisplayLink];
         return;
     }
-    
+
     // 处理翻页
     if (self.nextPageRunningFlag) {
         NSTimeInterval autoNextPageCostTime = [[NSDate date] timeIntervalSince1970] * 1000 - self.nextPageStartTimeMs;
-        
+
         if (self.nextPageDuration <= 0 || autoNextPageCostTime > self.nextPageDuration) {
             // 完成任务
             self.nextPageRunningFlag = NO;
         } else {
             CGFloat progressOfTotal = self.nextPageStartPage + 1.0 * autoNextPageCostTime / self.nextPageDuration;
             [self setProgressOfTotalInternal:progressOfTotal];
-            
+
             // 时间过半，设置下一页的填充数据
             if (autoNextPageCostTime >= self.nextPageDuration / 2.0) {
                 // 如果 self.nextPageProgressOfNextPage 在有效范围，就设置
@@ -324,18 +325,18 @@
             }
         }
     }
-    
+
     // 处理填充当前
     if (self.fillCurrentRunningFlag) {
         NSTimeInterval autoFillCurrentCostTime = [[NSDate date] timeIntervalSince1970] * 1000 - self.fillCurrentStartTimeMs;
-        
+
         if (self.fillCurrentDuration <= 0 || autoFillCurrentCostTime > self.fillCurrentDuration) {
             // 完成任务
             self.fillCurrentRunningFlag = NO;
         } else {
             CGFloat progressOfCurrent = self.fillCurrentStartProgress +
-                                       (1.0 - self.fillCurrentStartProgress) * autoFillCurrentCostTime / self.fillCurrentDuration;
-            
+            (1.0 - self.fillCurrentStartProgress) * autoFillCurrentCostTime / self.fillCurrentDuration;
+
             [self setProgressOfCurrentInternal:progressOfCurrent];
         }
     }
@@ -368,7 +369,7 @@
     } else if(startPage > self.numberOfPages - 1) {
         startPage = self.numberOfPages - 1;
     }
-
+    
     self.nextPageStartPage = startPage;
     self.nextPageStartTimeMs = [[NSDate date]timeIntervalSince1970] * 1000;
     self.nextPageDuration = duration;
